@@ -1,4 +1,4 @@
-#include "datareader.h"
+#include "../include/datareader.h"
 
 /*
     Reads a set of edges from a file in the following format: 
@@ -119,10 +119,10 @@ void writeVertices(std::string filename, vector<int> path, vector<double> weight
     std::cout << "Path saved to " << folderName << filename << "." << std::endl;
 }
 
-vector<vector<double>> readVertices(string filename){
+vector<vector<double> > readVertices(string filename){
     ifstream vertexFile(filename); // input file
     string line; // buffer for each line
-    vector<vector<double>> VertexVector; // vector to store the edges
+    vector<vector<double> > VertexVector; // vector to store the edges
     vector<double> X_coord;
     vector<double> Y_coord;
 

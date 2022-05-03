@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "../cs225/PNG.h"
+#include "PNG.h"
 
 namespace color
 {

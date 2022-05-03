@@ -1,41 +1,31 @@
 #pragma once
 
-#include "datareader.h"
 #include "graph.h"
-#include "bfs.h"
-#include "dijkstra.h"
-#include "dijkstra.cpp"
-#include "brandes.h"
-#include "brandes_mt.h"
 #include <iostream>
 //drawing tools importing
-#include "cs225/PNG.h"
-#include "drawing/color.h"
-#include "drawing/shape.h"
-#include "drawing/vector2.h"
-#include "drawing/line.h"
-#include "drawing/circle.h"
+#include "../drawing/PNG.h"
+#include "../drawing/color.h"
+#include "../drawing/shape.h"
+#include "../drawing/vector2.h"
+#include "../drawing/line.h"
+#include "../drawing/circle.h"
 
 using cs225::PNG;
 using cs225::HSLAPixel;
 
 
-void drawBC(const vector<vector<double>> &vertices, const vector<double> & BC, const Graph & g, size_t edge_num)
+void drawBC(const vector<vector<double> > &vertices, const vector<double> & BC, const Graph & g, size_t edge_num)
 {
   int start = 0;
   queue<int> q;         // create a queue for BFS
   int size = g.getSize();
 
-  const int WIDTH = 1800; // original: 2048
-  const int HEIGHT = 2048; // original: 1080
-  const char OUTPUT_FILE[] = "test_drawing.png";
+  const int WIDTH = 1800;
+  const int HEIGHT = 2048;
+  const char OUTPUT_FILE[] = "BC_graph.png";
   PNG canvas;
-  canvas.resize(1820, 2060); // original: (2050, 1100)
+  canvas.resize(1820, 2060);
 
-  /*
-  4/19 update: since initialize a array with certain size can't be compiled in this version, I declared
-  these following as vector
-  */
   vector<bool> visited_V(size, false);   // visited[v] records if v has been visited
   vector<int> explored_E(edge_num, 0);   //0: unlabeled, 1: discover, 2: cross
  
@@ -79,8 +69,6 @@ void drawBC(const vector<vector<double>> &vertices, const vector<double> & BC, c
             }else{
               radius_B = 3;
             }
-            //uncomment to print current ver
-            //cout << "current target V loc:" << vertices[0][currAdjVerIdx] * WIDTH <<", " << vertices[1][currAdjVerIdx] * HEIGHT<< endl;
             
             if (!visited_V[currAdjVerIdx]){
               explored_E[currEdgeIdx] = 1;

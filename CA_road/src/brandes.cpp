@@ -1,9 +1,9 @@
-#include "brandes_mt.h"
+#include "../include/brandes.h"
 
 std::mutex mu; // for thread synchronization
 int progress = 0; // record progress
 
-vector<double> brandes_mt(const Graph & g, unsigned int num_of_threads) {
+vector<double> brandes(const Graph & g, unsigned int num_of_threads) {
     // limit number of threads to cpu cores
     if (num_of_threads > std::thread::hardware_concurrency()) {
         num_of_threads = std::thread::hardware_concurrency();
@@ -52,10 +52,10 @@ void brandes_single_thread(const Graph & g, vector<double> & BC, int start, int 
         {
         std::lock_guard<std::mutex> locker(mu);
         progress++;
-        printProgress1((double)progress / g.getSize());
+        printProgress((double)progress / g.getSize());
         }
 
-        vector<vector<int>> pred(size); // predecessor
+        vector<vector<int> > pred(size); // predecessor
         vector<double> delta(size, 0); // one-sided dependency
         vector<double> d(size, INF); // shortest distance, initialized to INF
         vector<int> sigma(size, 0);  // number of shortest distance
@@ -63,7 +63,7 @@ void brandes_single_thread(const Graph & g, vector<double> & BC, int start, int 
         sigma[s] = 1; // number of shortest path from s to s is 1
         d[s] = 0; // distance from s to s is 0
 
-        std::set<std::pair<double, int>> q; // priority queue for Dijkstra
+        std::set<std::pair<double, int> > q; // priority queue for Dijkstra
         std::stack<int> st; // for calculating delta
         q.insert(std::make_pair(0, s)); // enqueue the starting point
 

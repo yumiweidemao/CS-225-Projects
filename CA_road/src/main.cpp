@@ -1,14 +1,10 @@
-#include "datareader.h"
-#include "graph.h"
-#include "bfs.h"
-#include "dijkstra.h"
-#include "dijkstra.cpp"
-#include "brandes.h"
-#include "brandes_mt.h"
+#include "../include/datareader.h"
+#include "../include/graph.h"
+#include "../include/dijkstra.h"
+#include "../include/brandes.h"
+#include "../include/drawBC.h"
 #include <iostream>
 #include <limits>
-//drawing tools importing
-#include "drawBC.h"
 
 using cs225::PNG;
 using cs225::HSLAPixel;
@@ -43,16 +39,6 @@ int main(int argc, char ** argv) {
     std::cin.clear();
     std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    // Run BFS
-    vector<int> bfs_path = bfs(G, start, end);    // calculate one possible path from start to end
-    double bfs_totalWeight = G.getTotalWeight(bfs_path); // calculate total weight of the path
-    std::cout << "\n";
-    std::cout << "(bfs) The length of the path is " << bfs_totalWeight << "km." << std::endl;
-    string bfs_filename = "BFS_" + std::to_string(start) + "_" + std::to_string(end) + ".txt";
-    vector<double> bfs_weightVector = G.getAccumulateWeight(bfs_path);
-    writeVertices(bfs_filename, bfs_path, bfs_weightVector);
-    std::cout << "\n";
-
     // Run Dijkstra
     Dijkstra d(NUM_VERTICES);
     for (Edge e : edges) {
@@ -62,22 +48,30 @@ int main(int argc, char ** argv) {
     vector<int> d_path = d.getPathTo(end);
     vector<double> d_weightVector = G.getAccumulateWeight(d_path);
     double d_totalWeight = G.getTotalWeight(d_path);
-    std::cout << "(dijkstra) The length of the path is " << d_totalWeight << "km." << std::endl;
-    string d_filename = "Dijkstra_" + std::to_string(start) + "_" + std::to_string(end) + ".txt";
+    std::cout << "The length of the path is " << d_totalWeight << "km." << std::endl;
+    string d_filename = std::to_string(start) + "_to_" + std::to_string(end) + ".txt";
     writeVertices(d_filename, d_path, d_weightVector);
     std::cout << "\n";
 
     // Choose whether to run Brandes
     char key = '\0';
-    while (std::cout << "Run Brandes? (should take ~10 minutes) [y/n] : " && (!(std::cin >> key) || (key != 'y' && key != 'n'))) {
+    while (std::cout << "Run Brandes? [y/n] : " && (!(std::cin >> key) || (key != 'y' && key != 'n'))) {
         std::cin.clear();
         std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 
     // Run Brandes
     if (key == 'y') {
+        std::cout << "\nYour CPU has " << std::thread::hardware_concurrency() << " cores." << std::endl;
+        std::cout << "Number of cores you'd like to use:  ";
+        int n_threads;
+        while (!(std::cin >> n_threads) || !(n_threads >= 0 && n_threads <= std::thread::hardware_concurrency())) {
+            std::cout << "Invalid, enter again! Number of cores you'd like to use:  ";
+            std::cin.clear();
+            std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
         std::cout << "Running Brandes algorithm on the whole dataset...\n" << std::endl;
-        vector<double> BC = brandes_mt(G);
+        vector<double> BC = brandes(G, n_threads);
         ofstream ofs("brandes_results.txt");
 
         auto largest = std::max_element(BC.begin(), BC.end());
@@ -90,10 +84,10 @@ int main(int argc, char ** argv) {
 
         std::cout << "\nBrandes results saved to brandes_results.txt.\n" << std::endl;
 
-        vector<vector<double>> vertices = readVertices("dataset/calnode.txt");
+        vector<vector<double> > vertices = readVertices("dataset/calnode.txt");
 
         drawBC(vertices, BC, G, edges.size());
-        std::cout << "Betweenness centrality graph saved to test_drawing.png.\n" << std::endl;
+        std::cout << "Betweenness centrality graph saved to BC_graph.png.\n" << std::endl;
     }
     
     return 0;

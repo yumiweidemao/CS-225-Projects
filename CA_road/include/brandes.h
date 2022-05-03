@@ -17,10 +17,10 @@ using std::vector;
 const double INF = 99999999;
 #endif
 
-vector<double> brandes_mt(const Graph & g, unsigned int num_of_threads = 6);
+vector<double> brandes(const Graph & g, unsigned int num_of_threads = 6);
 void brandes_single_thread(const Graph & g, vector<double> & BC, int start, int end, int size);
 
-inline void printProgress1(double percentage) {
+inline void printProgress(double percentage) {
     int val = (int) (percentage * 100);
     int lpad = (int) (percentage * PBWIDTH);
     int rpad = PBWIDTH - lpad;
