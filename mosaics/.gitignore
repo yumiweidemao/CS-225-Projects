@@ -1,0 +1,6 @@
+mosaics
+test
+.obj
+*.o
+*.d
+.DS_Store

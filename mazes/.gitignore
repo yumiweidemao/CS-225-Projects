@@ -1,0 +1,4 @@
+mazes
+*.o
+*.d
+.obj
