@@ -1,3 +1,3 @@
-# cpp
+# CS 225 Projects
 
-A repository for my C++ projects.
+Repository for UIUC Spring 2022 CS 225 projects.
