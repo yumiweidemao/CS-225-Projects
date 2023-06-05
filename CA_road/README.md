@@ -19,6 +19,12 @@ This program is compiled using *Makefile*. To compile the program, go to the cur
 
 `make`
 
+Please have the relevant tools installed:
+`sudo apt-get install build-essential`
+`sudo apt-get install libc++abi-dev`
+`sudo apt-get install libc++-14-dev`
+Note that the dependencies must have the same version as clang++.
+
 To run the compiled program, type in terminal:
 
 `./main`
