@@ -10,9 +10,9 @@ This program has two main functions.
 
 For (1), the calculate paths will be saved to the directory *generated_paths*. For (2), a brandes_results.txt file will be saved to the current directory, and a .png file will be saved for visualization. Following is the visualization of the result of the algorithm:
 
-<img src="generated_paths/BC_graph.png" height=600>
+<img src="generated_paths/BC_graph.png" height=500>
 
-Due to the long runtime, (2) is based on a multithreading implementation.
+The red line is actually the I-5 Interstate! Due to the long runtime, (2) is based on a multithreading implementation.
 
 ## How to use
 
