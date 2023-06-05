@@ -8,7 +8,8 @@ This program has two main functions.
 1. Calculate the shortest distance between any two places in California using Dijkstra's algorithm
 2. Calculate the betweenness centrality of all vertices in the road network of California using Brandes' algorithm.
 
-For (1), the calculate paths will be saved to the directory *generated_paths*. For (2), a brandes_results.txt file will be saved to the current directory, and a .png file will be saved for visualization.
+For (1), the calculate paths will be saved to the directory *generated_paths*. For (2), a brandes_results.txt file will be saved to the current directory, and a .png file will be saved for visualization. Following is the visualization of the result of the algorithm:
+<img src="generated_paths/BC_graph.png">
 
 Due to the long runtime, (2) is based on a multithreading implementation.
 
